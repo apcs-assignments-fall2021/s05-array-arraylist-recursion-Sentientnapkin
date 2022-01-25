@@ -51,8 +51,11 @@ public class MyMain {
 
     // Tail Recursive Method:
     public static int sumTR(int[] arr, int i, int sum) {
-        // YOUR CODE HERE
-        return -1;
+        if (i==arr.length){
+            return sum;
+        }
+        else
+            return sumTR(arr,i+1,sum+arr[i]);
     }
 
 
@@ -69,14 +72,19 @@ public class MyMain {
 
     // Wrapper Method (Provided for you):
     public static boolean search(ArrayList<Integer> list, int x) {
-        // YOUR CODE HERE
-        return false;
+        return searchTR(list,x,0);
     }
 
     // Tail Recursive Method:
     public static boolean searchTR(ArrayList<Integer> list, int x, int i) {
-        // YOUR CODE HERE
-        return false;
+        if (i==list.size()){
+            return false;
+        }
+        else if(list.get(i)==x){
+            return true;
+        }
+        else
+            return searchTR(list,x,i+1);
     }
 
 
@@ -89,13 +97,21 @@ public class MyMain {
 
     // Wrapper Method (Provided for you):
     public static boolean allEven(int[] arr) {
-        // YOUR CODE HERE
-        return false;
+        return allEvenTR(arr,0);
     }
 
     // Tail Recursive Method:
     // You should write this yourself!
-
+    public static boolean allEvenTR(int[] arr,int i){
+        if(i==arr.length){
+            return true;
+        }
+        else if (arr[i]%2!=0){
+            return false;
+        }
+        else
+            return allEvenTR(arr,i+1);
+    }
 
     // ********************
     // Examples From Class:
@@ -136,24 +152,42 @@ public class MyMain {
 
     // Wrapper method
     public static boolean hasCountCopies(int[] arr, int x, int count) {
-        // YOUR CODE HERE
-        return false;
+        return hasCountCopiesTR(arr,x,count,0);
     }
 
     // You may want a tail recursive method
-
+    public static boolean hasCountCopiesTR(int[] arr,int x,int count,int i){
+        if(i==arr.length){
+            return count==0;
+        }
+        else if (arr[i]==x){
+            return hasCountCopiesTR(arr,x,count-1,i+1);
+        }
+        else {
+            return hasCountCopiesTR(arr,x,count,i+1);
+        }
+    }
 
     // This recursive method checks if the array is sorted in
     // non-decreasing order
 
     // Wrapper method
     public static boolean isSorted(ArrayList<Integer> list) {
-        // YOUR CODE HERE
-        return false;
+        return isSortedTR(list,1);
     }
 
     // You may want a tail recursive method
-
+    public static boolean isSortedTR(ArrayList<Integer> list,int i){
+        if(i==list.size()){
+            return true;
+        }
+        else if (list.get(i)<list.get(i-1)){
+            return false;
+        }
+        else{
+            return isSortedTR(list,i+1);
+        }
+    }
 
 
 
@@ -183,8 +217,28 @@ public class MyMain {
 
     // No tail recursion necessary!
     public static boolean escape(char[][] mat, int row, int col) {
-        // YOUR CODE HERE
-        return false;
+        // Check out of bounds, return
+        if (row < 0 || col < 0 || row >= mat.length || col >= mat[0].length){
+            return false;
+        }
+        else if (mat[row][col]=='f'){
+            return true;
+        }
+        // If we're at wall, don't do anything
+        else if (mat[row][col] == 'w') {
+            return false;
+        }
+        // If we've already visited there, let's return early
+        else if (mat[row][col] == '*') {
+            return false;
+        }
+        else {
+            // Leave "breadcrumbs"
+            mat[row][col] = '*';
+
+            // Visit our neighbors (left, up, right, down)
+            return escape(mat, row, col-1)||escape(mat, row-1, col) || escape(mat, row, col+1) || escape(mat, row+1, col);
+        }
     }
 
 
